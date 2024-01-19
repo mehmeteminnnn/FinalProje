@@ -317,3 +317,18 @@ ggplot(en_fazla_gold_medal_sporlari, aes(x = reorder(Country, -Gold_Medal_Sayisi
 
 
 
+# Q7 : Sonuç değerlendirme, tavsiyeler
+<div style="font-size: 16px;">
+Hayali ülkemiz, olimpiyatlarda başarı sağlayarak spor yatırımlarını hangi ülkelere yönlendirmesi gerektiği konusunda analiz şirketimize başvurdu. 1976-2008 verilerini inceleyerek spor yatırımları konusunda vereceğimiz tavsiyeler şunlardır:
+
+***1)***Ülkemizde kadınların hentbol konusunda ilgi gösterdiğini belirtmiştik. 32 yıllık olimpiyat verilerini inceledik ve kadınlar arasında hentbolda en başarılı ülkelerin Güney Kore, Danimarka ve Norveç olduğunu tespit ettik. Bu bölgelerden spor antrenörleri getirerek yeni nesillerin yetişmesine katkı sağlamak en mantıklı yol olabilir.
+
+***2)***Ülkenin coğrafi şartlarına en yakın ülke olan komşumuz Meksika'nın verilerini inceledik. Meksika'nın madalya dağılım grafiğini değerlendirdik ve gelecekteki yatırımlarımızı Jumping, Eventing ve Diving sporları üzerine yoğunlaştırmamız gerektiğini düşündük.
+
+***3)***Ülkemizin Atlas Okyanusu'na kıyısı bulunuyor ve olimpiyat komitesi tarafından yüzme dalında büyük potansiyele sahip olduğumuz belirtilmişti. Son 32 yılın verilerini incelediğimizde, yüzme konusunda ülkemize getirilecek antrenörlerin Amerika Birleşik Devletleri ve Avustralya'dan seçilmesinin uygun olacağını düşündük.
+
+Bu önerilerimiz, ülkemizin spor yatırımlarını daha etkili ve stratejik bir şekilde yönlendirmesine yardımcı olabilir ve maddi olarak zarar etmeden gelecek yatırımlarını yaparak yıllardır özlediği başarılara ulaşmasını sağlayabilir.
+
+</div>
+
+
