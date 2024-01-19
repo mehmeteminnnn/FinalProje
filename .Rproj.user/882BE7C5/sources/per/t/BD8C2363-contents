@@ -15,3 +15,224 @@ editor_options:
 
 Şirketimiz veri analizi şirketidir ve olimpiyat oyunlarında başarısız olan ülkelere geçmis verileri kullanarak raporlar sunmaktadır.Ülkemiz yeterince başarılı değil ve gelecek yıllar için yapacağı yatırımlar için bizim raporlarımıza ihtiyaçları var.
 
+# Q2 : Proje Amacı
+
+[Summer Olympics Medals (1976-2008)](https://www.kaggle.com/datasets/divyansh22/summer-olympics-medals?resource=download) adlı Kaggle veri setini kullanarak analiz edilecek ve ülke olimpiyat komitesine sunulacak raporda istenen kriterler şunlardır: 
+
+1)Kadınlarda hentbolda en başarılı 5 ülke hangisi?
+
+2)Yüzmede en başarılı olan ülke hangisi?
+
+3)Meksika'nın en fazla madalya aldığı spor dalı hangisi?
+
+4)Takım sporlarında en başarılı ülke hangisi?
+
+İşe başvuran kişiden bu verilere göre olimpiyat komitemize bir rapor sunmasını ve gelecek yıllarda başarılı olduğuna inandığımız ülkelerden eğitmenler getirilerek bu spor dallarında geleceğimizin inşa edilmesine katkı sağlamasıdır.
+
+# Q3 : Veri Seti Keşifsel Analizi
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# Veri dosyasını internetten indir ve git repo'sunun içine commitle
+filename <- "Summer-Olympic-medals-1976-to-2008.csv"
+
+# Dosyayi ithal et
+library(readr)
+olympic <- read_csv(filename)
+
+```
+
+Veri seti Kaggle web sitesinden indirilmiştir ve **readr::read_csv()** fonksiyonu kullanılarak **olympic** değişkenine ithal edilmiştir.
+
+Veri boyutları aşağıdaki gibidir :
+
+-   Satir sayisi : `r nrow(olympic)`
+-   Sütun sayisi : `r ncol(olympic)` 
+
+Veri setinin bir kısmı aşağıda gösterilmistir:
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+
+library(kableExtra)
+
+# İlk 5 satırı tablo haline getirme
+kable(head(olympic, 5), caption = "Aşağıdaki tablo veri setindeki ilk 5 satırı vermektedir:")
+
+sport_counts <- table(olympic$Sport)
+
+# Spor dallarını sıklığına göre sırala ve ilk 10 tanesini seç
+top_sports <- head(sort(sport_counts, decreasing = TRUE), 10)
+
+# Pasta grafiğini çiz
+pie(top_sports, main = "En Popüler 10 Spor Dalının Sporcu Sayısına Göre Dağılımı", labels = names(top_sports), col = rainbow(length(top_sports)))
+```
+
+**Yukarıdaki pasta grafiği en fazla sporcu bulunan spor dallarının ilk 10 tanesini gösteriyor.**
+
+
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE,include=FALSE}
+# Gerekli kütüphaneleri yükle
+library(testthat)
+# Test dosyasını çağır
+testthat::test_file("tests/Q1_tests_mehmetemin_tok_210401072.R")
+```
+
+
+
+
+# Q4 : Veri Seti Ön İşlemesi
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+# Atlet bilgisi içeren sütunu factor tipine çevirme
+olympic$Athlete <- as.factor(olympic$Athlete)
+
+
+
+# Özet Rapor
+summary_df <- data.frame(
+  
+  unique_values_Athlete = length(unique(olympic$Athlete)),
+  unique_values_Event = length(unique(olympic$Event))
+)
+
+# Raporu gösterme
+print(summary_df)
+
+
+
+```
+
+Atlet  sütunu **character** tipinden  **factor** tipine dönüştürülmüştür.
+Ve yukarıdaki raporda athlete ve event sütunlarının unique değer sayıları gösterilmiştir.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE,include=FALSE}
+# Gerekli kütüphaneleri yükle
+library(testthat)
+# Test dosyasını çağır
+testthat::test_file("tests/Q1_tests_mehmetemin_tok_210401072.R")
+```
+
+# Q5 : Veri mühendisliği
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+en_basarili_ulke <- olympic %>%
+  filter(Sport == "Handball" & Gender == "Women") %>%
+  group_by(Country) %>%
+  summarise(Medal = n()) %>%
+  top_n(5, Medal)
+ en_basarili_ulke_sirali <- en_basarili_ulke %>%
+  arrange(desc(Medal))
+
+# Sonucu tablo halinde göster
+knitr::kable(en_basarili_ulke_sirali, caption = "En Başarılı Ülkeler")
+ggplot(en_basarili_ulke, aes(x = "", y = Medal, fill = Country)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y", start = 0) +
+  labs(title = "En Başarılı Ülkeler", fill = "Ülke") +
+  theme_minimal() +
+  theme(legend.position="bottom")
+
+```
+
+**Kadınlar hentbolda en başarılı ülkelerin listesi**
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+
+# Veri setinden Meksika'nın olduğu satırları seç
+meksika_data <- filter(olympic, Country == "Mexico" & Medal == "Gold")
+
+# Gold madalya sayılarına göre sırala ve ilk 5'i seç
+en_fazla_gold_eventler <- meksika_data %>%
+  group_by(Discipline) %>%
+  summarise(Toplam_Gold_Medal = n()) %>%
+  arrange(desc(Toplam_Gold_Medal)) %>%
+  top_n(18, Toplam_Gold_Medal)
+
+
+library(ggplot2)
+
+# Çubuk grafik oluştur
+ggplot(en_fazla_gold_eventler, aes(x = reorder(Discipline, Toplam_Gold_Medal), y = Toplam_Gold_Medal)) +
+  geom_bar(stat = "identity", fill = "gold") +
+  labs(title = "Meksika'nın En Fazla Altın Madalya Aldığı Disiplinler",
+       x = "Branş",
+       y = "Toplam Altın Madalya") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  coord_flip()
+
+
+```
+
+**Ülkemize en yakın şartlara sahip Meksika'nın en başarılı olduğu spor dalları**
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+# Takım sporlarının olduğu veri çerçevesini filtrele
+takim_sporlari <- olympic %>%
+  filter(Sport %in% c("Football", "Basketball", "Handball"))
+
+# Her bir ülkenin ve her bir spor dalının altında kaç adet gold madalya kazandığını hesapla
+gold_medal_sayilari <- takim_sporlari %>%
+  group_by(Country, Sport) %>%
+  filter(Medal == "Gold") %>%
+  summarise(Gold_Medal_Sayisi = n())
+
+# Her bir spor dalı için en fazla gold madalya kazanan ülkeyi seç
+en_fazla_gold_medal_sporlari <- gold_medal_sayilari %>%
+  group_by(Sport) %>%
+  top_n(5, Gold_Medal_Sayisi) %>%
+  ungroup()
+library(ggplot2)
+
+# Çubuk grafiğini çiz
+ggplot(en_fazla_gold_medal_sporlari, aes(x = reorder(Country, -Gold_Medal_Sayisi), y = Gold_Medal_Sayisi, fill = Country)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  facet_wrap(~Sport, scales = "free_y") +
+  labs(title = "En Fazla Altın Madalya Kazanan Ülkeler (Takım Sporları)", x = "Ülke", y = "Gold Madalya Sayısı", fill = "Ülke") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+
+```
+
+**Yukarıdaki grafikte gruplanmış takım sporlarındaki en başarılı ülkeler listelenmiştir**
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(lattice)
+
+# gender'ı "Men" ve discipline'ı "Swimming" olanları filtrele
+swimming_men <- olympic %>%
+  filter(Gender == "Men" & Discipline == "Swimming")
+
+# Her bir ülkenin madalya sayısını hesapla
+medal_counts <- swimming_men %>%
+  group_by(Country) %>%
+  summarise(Total_Medals = n())
+
+# Top 10 ülkeyi seç ve madalya sayısına göre sırala
+top_10_countries <- medal_counts %>%
+  arrange(desc(Total_Medals)) %>%
+  top_n(10, Total_Medals)
+
+# Ülkeleri madalya sayısına göre sırala
+top_10_countries <- top_10_countries %>%
+  arrange(Total_Medals)
+
+# Çubuk grafik oluştur
+barchart(Country ~ Total_Medals, data = top_10_countries,
+         main = "Yüzmede En İyi 10 Ülke (1976-2008)",
+         xlab = "Toplam Madalya", ylab = "Ülke",
+         col = rainbow(nrow(top_10_countries)))
+
+
+
+```
+
+**Erkekler yüzmede en fazla madalya alan ülkelerin listesi**
+
