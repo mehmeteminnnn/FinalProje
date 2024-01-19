@@ -29,3 +29,56 @@ editor_options:
 
 İşe başvuran kişiden bu verilere göre olimpiyat komitemize bir rapor sunmasını ve gelecek yıllarda başarılı olduğuna inandığımız ülkelerden eğitmenler getirilerek bu spor dallarında geleceğimizin inşa edilmesine katkı sağlamasıdır.
 
+# Q3 : Veri Seti Keşifsel Analizi
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# Veri dosyasını internetten indir ve git repo'sunun içine commitle
+filename <- "Summer-Olympic-medals-1976-to-2008.csv"
+
+# Dosyayi ithal et
+library(readr)
+olympic <- read_csv(filename)
+
+```
+
+Veri seti Kaggle web sitesinden indirilmiştir ve **readr::read_csv()** fonksiyonu kullanılarak **olympic** değişkenine ithal edilmiştir.
+
+Veri boyutları aşağıdaki gibidir :
+
+-   Satir sayisi : `r nrow(olympic)`
+-   Sütun sayisi : `r ncol(olympic)` 
+
+Veri setinin bir kısmı aşağıda gösterilmistir:
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+
+library(kableExtra)
+
+# İlk 5 satırı tablo haline getirme
+kable(head(olympic, 5), caption = "Aşağıdaki tablo veri setindeki ilk 5 satırı vermektedir:")
+
+sport_counts <- table(olympic$Sport)
+
+# Spor dallarını sıklığına göre sırala ve ilk 10 tanesini seç
+top_sports <- head(sort(sport_counts, decreasing = TRUE), 10)
+
+# Pasta grafiğini çiz
+pie(top_sports, main = "En Popüler 10 Spor Dalının Sporcu Sayısına Göre Dağılımı", labels = names(top_sports), col = rainbow(length(top_sports)))
+```
+
+**Yukarıdaki pasta grafiği en fazla sporcu bulunan spor dallarının ilk 10 tanesini gösteriyor.**
+
+
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE,include=FALSE}
+# Gerekli kütüphaneleri yükle
+library(testthat)
+# Test dosyasını çağır
+testthat::test_file("tests/Q1_tests_mehmetemin_tok_210401072.R")
+```
+
+
+
+
