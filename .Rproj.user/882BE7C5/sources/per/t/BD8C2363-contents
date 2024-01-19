@@ -236,3 +236,84 @@ barchart(Country ~ Total_Medals, data = top_10_countries,
 
 **Erkekler yüzmede en fazla madalya alan ülkelerin listesi**
 
+# Q6 : Veri analizi
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+
+# Veri setinden Meksika'nın olduğu satırları seç
+meksika_data <- filter(olympic, Country == "Mexico" & Medal == "Bronze")
+
+# Gold madalya sayılarına göre sırala ve ilk 5'i seç
+en_fazla_gold_eventler <- meksika_data %>%
+  group_by(Discipline) %>%
+  summarise(Toplam_Gold_Medal = n()) %>%
+  arrange(desc(Toplam_Gold_Medal)) %>%
+  top_n(20, Toplam_Gold_Medal)
+
+
+library(ggplot2)
+
+# Çubuk grafik oluştur
+ggplot(en_fazla_gold_eventler, aes(x = reorder(Discipline, Toplam_Gold_Medal), y = Toplam_Gold_Medal)) +
+  geom_bar(stat = "identity", fill = "blue") +
+  labs(title = "Meksika'nın En Fazla  Madalya Aldığı Disiplinler",
+       x = "Branş",
+       y = "Toplam  Madalya") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  coord_flip()
+
+
+```
+
+**Ülkemize en yakın şartlara sahip Meksika'nın en başarılı olduğu spor dalları**
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(lattice)
+
+# gender'ı "Men" ve discipline'ı "Swimming" olanları filtrele
+swimming_men <- olympic %>%
+  filter(Gender == "Men" & Discipline == "Swimming")
+
+# Her bir ülkenin madalya sayısını hesapla
+medal_counts <- swimming_men %>%
+  group_by(Country) %>%
+  summarise(Total_Medals = n())
+
+# Top 10 ülkeyi seç ve madalya sayısına göre sırala
+top_10_countries <- medal_counts %>%
+  arrange(desc(Total_Medals)) %>%
+  top_n(10, Total_Medals)
+
+# Ülkeleri madalya sayısına göre sırala
+top_10_countries <- top_10_countries %>%
+  arrange(Total_Medals)
+
+# Nokta grafiği oluştur
+dotplot(Total_Medals ~ Country, data = top_10_countries,
+        main = "Yüzmede En İyi 10 Ülke (1976-2008)",
+        xlab = "Ülke", ylab = "Toplam Madalya",
+        col = rainbow(nrow(top_10_countries)))
+
+```
+
+**Ülkemizin kendi içinde başarılı olduğu yüzme alanında globalde başarılı olan ülkelerin grafiği**
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(ggplot2)
+
+# Nokta grafiğini çiz
+ggplot(en_fazla_gold_medal_sporlari, aes(x = reorder(Country, -Gold_Medal_Sayisi), y = Gold_Medal_Sayisi, color = Country)) +
+  geom_point(size = 3) +
+  facet_wrap(~Sport, scales = "free_y") +
+  labs(title = "En Fazla Altın Madalya Kazanan Ülkeler (Takım Sporları)", x = "Ülke", y = "Gold Madalya Sayısı", color = "Ülke") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+**Takım Sporlarında Örnek Alınabilecek Ülkeler İçin Grafiğimiz**
+
+
+

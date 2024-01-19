@@ -3,7 +3,7 @@
     "path": "~/GitHub/FinalProje/mehmetemin_tok_210401072.Rmd",
     "project_path": "mehmetemin_tok_210401072.Rmd",
     "type": "r_markdown",
-    "hash": "855101252",
+    "hash": "3507373946",
     "contents": "",
     "dirty": false,
     "created": 1705666452631.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "238,0",
-        "scrollLine": "219"
+        "cursorPosition": "319,0",
+        "scrollLine": "302"
     },
     "folds": "",
-    "lastKnownWriteTime": 1705667599,
+    "lastKnownWriteTime": 1705667741,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1705667599348,
+    "last_content_update": 1705667741679,
     "read_only": false,
     "read_only_alternatives": []
 }
