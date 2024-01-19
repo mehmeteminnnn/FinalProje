@@ -82,3 +82,35 @@ testthat::test_file("tests/Q1_tests_mehmetemin_tok_210401072.R")
 
 
 
+# Q4 : Veri Seti Ön İşlemesi
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+# Atlet bilgisi içeren sütunu factor tipine çevirme
+olympic$Athlete <- as.factor(olympic$Athlete)
+
+
+
+# Özet Rapor
+summary_df <- data.frame(
+  
+  unique_values_Athlete = length(unique(olympic$Athlete)),
+  unique_values_Event = length(unique(olympic$Event))
+)
+
+# Raporu gösterme
+print(summary_df)
+
+
+
+```
+
+Atlet  sütunu **character** tipinden  **factor** tipine dönüştürülmüştür.
+Ve yukarıdaki raporda athlete ve event sütunlarının unique değer sayıları gösterilmiştir.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE,include=FALSE}
+# Gerekli kütüphaneleri yükle
+library(testthat)
+# Test dosyasını çağır
+testthat::test_file("tests/Q1_tests_mehmetemin_tok_210401072.R")
+```
+
