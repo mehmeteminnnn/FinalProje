@@ -1,0 +1,31 @@
+---
+title: "Proje Rapor :Mehmet Emin Tok 210401072"
+output: html_document
+date: "2024-01-18"
+lang : Turkish
+encoding: UTF-8
+editor_options: 
+  markdown: 
+    wrap: sentence
+---
+
+
+
+# Q1 : Problem Tanımı
+
+Şirketimiz veri analizi şirketidir ve olimpiyat oyunlarında başarısız olan ülkelere geçmis verileri kullanarak raporlar sunmaktadır.Ülkemiz yeterince başarılı değil ve gelecek yıllar için yapacağı yatırımlar için bizim raporlarımıza ihtiyaçları var.
+
+# Q2 : Proje Amacı
+
+[Summer Olympics Medals (1976-2008)](https://www.kaggle.com/datasets/divyansh22/summer-olympics-medals?resource=download) adlı Kaggle veri setini kullanarak analiz edilecek ve ülke olimpiyat komitesine sunulacak raporda istenen kriterler şunlardır: 
+
+1)Kadınlarda hentbolda en başarılı 5 ülke hangisi?
+
+2)Yüzmede en başarılı olan ülke hangisi?
+
+3)Meksika'nın en fazla madalya aldığı spor dalı hangisi?
+
+4)Takım sporlarında en başarılı ülke hangisi?
+
+İşe başvuran kişiden bu verilere göre olimpiyat komitemize bir rapor sunmasını ve gelecek yıllarda başarılı olduğuna inandığımız ülkelerden eğitmenler getirilerek bu spor dallarında geleceğimizin inşa edilmesine katkı sağlamasıdır.
+
